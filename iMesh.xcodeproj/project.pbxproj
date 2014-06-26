@@ -1,0 +1,514 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8269ED26195C9A720006FE2C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8269ED25195C9A720006FE2C /* Foundation.framework */; };
+		8269ED28195C9A720006FE2C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8269ED27195C9A720006FE2C /* CoreGraphics.framework */; };
+		8269ED2A195C9A720006FE2C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8269ED29195C9A720006FE2C /* UIKit.framework */; };
+		8269ED2C195C9A720006FE2C /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8269ED2B195C9A720006FE2C /* CoreData.framework */; };
+		8269ED32195C9A720006FE2C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8269ED30195C9A720006FE2C /* InfoPlist.strings */; };
+		8269ED34195C9A720006FE2C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8269ED33195C9A720006FE2C /* main.m */; };
+		8269ED38195C9A720006FE2C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8269ED37195C9A720006FE2C /* AppDelegate.m */; };
+		8269ED3B195C9A720006FE2C /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8269ED39195C9A720006FE2C /* Main_iPhone.storyboard */; };
+		8269ED3E195C9A720006FE2C /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8269ED3C195C9A720006FE2C /* Main_iPad.storyboard */; };
+		8269ED41195C9A720006FE2C /* iMesh.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8269ED3F195C9A720006FE2C /* iMesh.xcdatamodeld */; };
+		8269ED44195C9A720006FE2C /* MasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8269ED43195C9A720006FE2C /* MasterViewController.m */; };
+		8269ED47195C9A720006FE2C /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8269ED46195C9A720006FE2C /* DetailViewController.m */; };
+		8269ED49195C9A720006FE2C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8269ED48195C9A720006FE2C /* Images.xcassets */; };
+		8269ED50195C9A720006FE2C /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8269ED4F195C9A720006FE2C /* XCTest.framework */; };
+		8269ED51195C9A720006FE2C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8269ED25195C9A720006FE2C /* Foundation.framework */; };
+		8269ED52195C9A720006FE2C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8269ED29195C9A720006FE2C /* UIKit.framework */; };
+		8269ED53195C9A720006FE2C /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8269ED2B195C9A720006FE2C /* CoreData.framework */; };
+		8269ED5B195C9A720006FE2C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8269ED59195C9A720006FE2C /* InfoPlist.strings */; };
+		8269ED5D195C9A720006FE2C /* iMeshTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8269ED5C195C9A720006FE2C /* iMeshTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8269ED54195C9A720006FE2C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8269ED1A195C9A720006FE2C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8269ED21195C9A720006FE2C;
+			remoteInfo = iMesh;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		8269ED22195C9A720006FE2C /* iMesh.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iMesh.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8269ED25195C9A720006FE2C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		8269ED27195C9A720006FE2C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		8269ED29195C9A720006FE2C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		8269ED2B195C9A720006FE2C /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		8269ED2F195C9A720006FE2C /* iMesh-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "iMesh-Info.plist"; sourceTree = "<group>"; };
+		8269ED31195C9A720006FE2C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		8269ED33195C9A720006FE2C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		8269ED35195C9A720006FE2C /* iMesh-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iMesh-Prefix.pch"; sourceTree = "<group>"; };
+		8269ED36195C9A720006FE2C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		8269ED37195C9A720006FE2C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		8269ED3A195C9A720006FE2C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
+		8269ED3D195C9A720006FE2C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
+		8269ED40195C9A720006FE2C /* iMesh.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = iMesh.xcdatamodel; sourceTree = "<group>"; };
+		8269ED42195C9A720006FE2C /* MasterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MasterViewController.h; sourceTree = "<group>"; };
+		8269ED43195C9A720006FE2C /* MasterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MasterViewController.m; sourceTree = "<group>"; };
+		8269ED45195C9A720006FE2C /* DetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
+		8269ED46195C9A720006FE2C /* DetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
+		8269ED48195C9A720006FE2C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		8269ED4E195C9A720006FE2C /* iMeshTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iMeshTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8269ED4F195C9A720006FE2C /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		8269ED58195C9A720006FE2C /* iMeshTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "iMeshTests-Info.plist"; sourceTree = "<group>"; };
+		8269ED5A195C9A720006FE2C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		8269ED5C195C9A720006FE2C /* iMeshTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iMeshTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8269ED1F195C9A720006FE2C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8269ED28195C9A720006FE2C /* CoreGraphics.framework in Frameworks */,
+				8269ED2C195C9A720006FE2C /* CoreData.framework in Frameworks */,
+				8269ED2A195C9A720006FE2C /* UIKit.framework in Frameworks */,
+				8269ED26195C9A720006FE2C /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8269ED4B195C9A720006FE2C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8269ED50195C9A720006FE2C /* XCTest.framework in Frameworks */,
+				8269ED53195C9A720006FE2C /* CoreData.framework in Frameworks */,
+				8269ED52195C9A720006FE2C /* UIKit.framework in Frameworks */,
+				8269ED51195C9A720006FE2C /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		8269ED19195C9A720006FE2C = {
+			isa = PBXGroup;
+			children = (
+				8269ED2D195C9A720006FE2C /* iMesh */,
+				8269ED56195C9A720006FE2C /* iMeshTests */,
+				8269ED24195C9A720006FE2C /* Frameworks */,
+				8269ED23195C9A720006FE2C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		8269ED23195C9A720006FE2C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8269ED22195C9A720006FE2C /* iMesh.app */,
+				8269ED4E195C9A720006FE2C /* iMeshTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8269ED24195C9A720006FE2C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8269ED25195C9A720006FE2C /* Foundation.framework */,
+				8269ED27195C9A720006FE2C /* CoreGraphics.framework */,
+				8269ED29195C9A720006FE2C /* UIKit.framework */,
+				8269ED2B195C9A720006FE2C /* CoreData.framework */,
+				8269ED4F195C9A720006FE2C /* XCTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8269ED2D195C9A720006FE2C /* iMesh */ = {
+			isa = PBXGroup;
+			children = (
+				8269ED36195C9A720006FE2C /* AppDelegate.h */,
+				8269ED37195C9A720006FE2C /* AppDelegate.m */,
+				8269ED39195C9A720006FE2C /* Main_iPhone.storyboard */,
+				8269ED3C195C9A720006FE2C /* Main_iPad.storyboard */,
+				8269ED42195C9A720006FE2C /* MasterViewController.h */,
+				8269ED43195C9A720006FE2C /* MasterViewController.m */,
+				8269ED45195C9A720006FE2C /* DetailViewController.h */,
+				8269ED46195C9A720006FE2C /* DetailViewController.m */,
+				8269ED48195C9A720006FE2C /* Images.xcassets */,
+				8269ED3F195C9A720006FE2C /* iMesh.xcdatamodeld */,
+				8269ED2E195C9A720006FE2C /* Supporting Files */,
+			);
+			path = iMesh;
+			sourceTree = "<group>";
+		};
+		8269ED2E195C9A720006FE2C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				8269ED2F195C9A720006FE2C /* iMesh-Info.plist */,
+				8269ED30195C9A720006FE2C /* InfoPlist.strings */,
+				8269ED33195C9A720006FE2C /* main.m */,
+				8269ED35195C9A720006FE2C /* iMesh-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8269ED56195C9A720006FE2C /* iMeshTests */ = {
+			isa = PBXGroup;
+			children = (
+				8269ED5C195C9A720006FE2C /* iMeshTests.m */,
+				8269ED57195C9A720006FE2C /* Supporting Files */,
+			);
+			path = iMeshTests;
+			sourceTree = "<group>";
+		};
+		8269ED57195C9A720006FE2C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				8269ED58195C9A720006FE2C /* iMeshTests-Info.plist */,
+				8269ED59195C9A720006FE2C /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8269ED21195C9A720006FE2C /* iMesh */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8269ED60195C9A720006FE2C /* Build configuration list for PBXNativeTarget "iMesh" */;
+			buildPhases = (
+				8269ED1E195C9A720006FE2C /* Sources */,
+				8269ED1F195C9A720006FE2C /* Frameworks */,
+				8269ED20195C9A720006FE2C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = iMesh;
+			productName = iMesh;
+			productReference = 8269ED22195C9A720006FE2C /* iMesh.app */;
+			productType = "com.apple.product-type.application";
+		};
+		8269ED4D195C9A720006FE2C /* iMeshTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8269ED63195C9A720006FE2C /* Build configuration list for PBXNativeTarget "iMeshTests" */;
+			buildPhases = (
+				8269ED4A195C9A720006FE2C /* Sources */,
+				8269ED4B195C9A720006FE2C /* Frameworks */,
+				8269ED4C195C9A720006FE2C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8269ED55195C9A720006FE2C /* PBXTargetDependency */,
+			);
+			name = iMeshTests;
+			productName = iMeshTests;
+			productReference = 8269ED4E195C9A720006FE2C /* iMeshTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8269ED1A195C9A720006FE2C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = "Laura Skelton";
+				TargetAttributes = {
+					8269ED4D195C9A720006FE2C = {
+						TestTargetID = 8269ED21195C9A720006FE2C;
+					};
+				};
+			};
+			buildConfigurationList = 8269ED1D195C9A720006FE2C /* Build configuration list for PBXProject "iMesh" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 8269ED19195C9A720006FE2C;
+			productRefGroup = 8269ED23195C9A720006FE2C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8269ED21195C9A720006FE2C /* iMesh */,
+				8269ED4D195C9A720006FE2C /* iMeshTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8269ED20195C9A720006FE2C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8269ED3E195C9A720006FE2C /* Main_iPad.storyboard in Resources */,
+				8269ED49195C9A720006FE2C /* Images.xcassets in Resources */,
+				8269ED3B195C9A720006FE2C /* Main_iPhone.storyboard in Resources */,
+				8269ED32195C9A720006FE2C /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8269ED4C195C9A720006FE2C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8269ED5B195C9A720006FE2C /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8269ED1E195C9A720006FE2C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8269ED47195C9A720006FE2C /* DetailViewController.m in Sources */,
+				8269ED44195C9A720006FE2C /* MasterViewController.m in Sources */,
+				8269ED38195C9A720006FE2C /* AppDelegate.m in Sources */,
+				8269ED41195C9A720006FE2C /* iMesh.xcdatamodeld in Sources */,
+				8269ED34195C9A720006FE2C /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8269ED4A195C9A720006FE2C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8269ED5D195C9A720006FE2C /* iMeshTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8269ED55195C9A720006FE2C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8269ED21195C9A720006FE2C /* iMesh */;
+			targetProxy = 8269ED54195C9A720006FE2C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		8269ED30195C9A720006FE2C /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8269ED31195C9A720006FE2C /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		8269ED39195C9A720006FE2C /* Main_iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8269ED3A195C9A720006FE2C /* Base */,
+			);
+			name = Main_iPhone.storyboard;
+			sourceTree = "<group>";
+		};
+		8269ED3C195C9A720006FE2C /* Main_iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8269ED3D195C9A720006FE2C /* Base */,
+			);
+			name = Main_iPad.storyboard;
+			sourceTree = "<group>";
+		};
+		8269ED59195C9A720006FE2C /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8269ED5A195C9A720006FE2C /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		8269ED5E195C9A720006FE2C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8269ED5F195C9A720006FE2C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8269ED61195C9A720006FE2C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "iMesh/iMesh-Prefix.pch";
+				INFOPLIST_FILE = "iMesh/iMesh-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		8269ED62195C9A720006FE2C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "iMesh/iMesh-Prefix.pch";
+				INFOPLIST_FILE = "iMesh/iMesh-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		8269ED64195C9A720006FE2C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/iMesh.app/iMesh";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "iMesh/iMesh-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "iMeshTests/iMeshTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		8269ED65195C9A720006FE2C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/iMesh.app/iMesh";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "iMesh/iMesh-Prefix.pch";
+				INFOPLIST_FILE = "iMeshTests/iMeshTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8269ED1D195C9A720006FE2C /* Build configuration list for PBXProject "iMesh" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8269ED5E195C9A720006FE2C /* Debug */,
+				8269ED5F195C9A720006FE2C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8269ED60195C9A720006FE2C /* Build configuration list for PBXNativeTarget "iMesh" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8269ED61195C9A720006FE2C /* Debug */,
+				8269ED62195C9A720006FE2C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		8269ED63195C9A720006FE2C /* Build configuration list for PBXNativeTarget "iMeshTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8269ED64195C9A720006FE2C /* Debug */,
+				8269ED65195C9A720006FE2C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		8269ED3F195C9A720006FE2C /* iMesh.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				8269ED40195C9A720006FE2C /* iMesh.xcdatamodel */,
+			);
+			currentVersion = 8269ED40195C9A720006FE2C /* iMesh.xcdatamodel */;
+			path = iMesh.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 8269ED1A195C9A720006FE2C /* Project object */;
+}
