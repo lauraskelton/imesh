@@ -15,6 +15,7 @@
 
 @protocol SSShareMessageManagerDelegate <NSObject>
 - (void)shareMessageManagerDidFailWithMessage:(NSString *)failMessage;
+-(void)shareMessageManagerDidFinishSharing;
 @end
 
 @interface SSShareMessageManager : NSObject <CBPeripheralManagerDelegate>
@@ -23,8 +24,10 @@
 @property (nonatomic, retain) NSString *messageString;
 @property (nonatomic, assign) BOOL isReadyToAdvertise;
 
-- (void)startAdvertisingMessage:(id)sender;
-- (void)stopAdvertisingMessage:(id)sender;
+- (void)stopAdvertising:(id)sender;
+- (void)startAdvertising:(id)sender;
 -(BOOL)isPeripheralAdvertising:(id)sender;
+
+-(void)shouldAdvertise:(id)sender;
 
 @end

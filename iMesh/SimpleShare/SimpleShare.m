@@ -47,6 +47,9 @@
 -(void)switchToListeningMode:(id)sender;
 -(void)checkBluetoothPermissionsSharing:(BOOL)isSharing;
 
+-(void)advertisingTimerCallback:(id)sender;
+-(void)stopAdvertisingCallback:(id)sender;
+
 @end
 
 @implementation SimpleShare
@@ -79,7 +82,48 @@
     // start listening for messages
     [self startFindingNearbyMessages:nil];
     
+    NSTimeInterval randomAdvertisingInterval = arc4random_uniform(540); // should advertise about once every 5 minutes (?)
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self performSelector:@selector(advertisingTimerCallback:) withObject:nil afterDelay:randomAdvertisingInterval];
+    });
+    
     return self;
+}
+
+-(void)advertisingTimerCallback:(id)sender
+{
+    // we should start advertising now (for 30 seconds) and stop scanning
+    if (_findManager != nil) {
+        _findManager.isAdvertising = YES;
+    }
+    
+    if (_shareManager == nil) {
+        _shareManager = [[SSShareMessageManager alloc] init];
+        _shareManager.delegate = self;
+    }
+    
+    [_shareManager shouldAdvertise:nil];
+    
+    // stop sharing after X seconds
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self performSelector:@selector(stopAdvertisingCallback:) withObject:nil afterDelay:30];
+    });
+}
+
+-(void)stopAdvertisingCallback:(id)sender
+{
+    [_shareManager stopAdvertising:nil];
+    
+    if (_findManager != nil) {
+        _findManager.isAdvertising = NO;
+    }
+    
+    NSTimeInterval randomAdvertisingInterval = arc4random_uniform(540); // should advertise about once every 5 minutes (?)
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self performSelector:@selector(advertisingTimerCallback:) withObject:nil afterDelay:randomAdvertisingInterval];
+    });
 }
 
 -(void)dealloc
@@ -112,23 +156,28 @@
 -(void)switchToSharingMode:(id)sender
 {
     // don't listen and share at the same time- causes bluetooth errors
-    [self stopFindingNearbyMessages:nil];
+    //[self stopFindingNearbyMessages:nil];
     
     [self startSharingMessage:nil];
     
+    // doing this with delegate method instead
+    /*
     // stop sharing after X seconds
     dispatch_async(dispatch_get_main_queue(), ^{
         [self performSelector:@selector(switchToListeningMode:) withObject:nil afterDelay:kShareMessageForTime];
     });
+     */
 }
 
 -(void)switchToListeningMode:(id)sender
 {
-    [self stopSharingMessage:nil];
+    //[self stopSharingMessage:nil];
+    
+    _shareManager.messageString = nil;
     
     // start listening after X seconds so we don't hear the same message again (later we'll check for duplicates)
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self performSelector:@selector(findNearbyMessages:) withObject:nil afterDelay:kShareMessageForTime];
+        [self performSelector:@selector(findNearbyMessages:) withObject:nil afterDelay:0.1];
     });
 }
 
@@ -148,8 +197,10 @@
 -(void)startSharingMessage:(id)sender
 {
     NSLog(@"start sharing message");
-    _shareManager = [[SSShareMessageManager alloc] init];
-    _shareManager.delegate = self;
+    if (_shareManager == nil) {
+        _shareManager = [[SSShareMessageManager alloc] init];
+        _shareManager.delegate = self;
+    }
     NSError *error;
     _shareManager.messageString = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:self.messageDictionary options:NSJSONWritingPrettyPrinted error:&error] encoding:NSUTF8StringEncoding];
 }
@@ -157,14 +208,14 @@
 -(void)stopSharingMessage:(id)sender
 {
     if (_shareManager != nil) {
-        [_shareManager stopAdvertisingMessage:nil];
+        [_shareManager stopAdvertising:nil];
         _shareManager = nil;
     }
 }
 
 -(void)startFindingNearbyMessages:(id)sender
 {
-    [self stopFindingNearbyMessages:nil];
+    //[self stopFindingNearbyMessages:nil];
         
     // First check if we've asked permission for bluetooth before
     if ([[NSUserDefaults standardUserDefaults] boolForKey:kSSAskedBluetoothPermissionKey] != YES) {
@@ -177,8 +228,11 @@
 
 -(void)findNearbyMessages:(id)sender
 {
-    _findManager = [[SSFindMessageManager alloc] init];
-    _findManager.delegate = self;
+    if (_findManager == nil) {
+        _findManager = [[SSFindMessageManager alloc] init];
+        _findManager.delegate = self;
+    }
+    _findManager.isAdvertising = NO;
 }
 
 -(void)stopFindingNearbyMessages:(id)sender
@@ -193,6 +247,9 @@
 
 - (void)findMessageManagerFoundMessage:(NSString *)messageString
 {
+    // tell the find manager we're advertising so it stops scanning
+    self.findManager.isAdvertising = YES;
+    
     NSError *error;
     NSMutableDictionary *messageDictionary = [[NSJSONSerialization JSONObjectWithData:[messageString dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingAllowFragments error:&error] mutableCopy];
     
@@ -238,6 +295,11 @@
     [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No Bluetooth Support", nil) message:failMessage delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"OK", nil), nil] show];
     
     [delegate simpleShareDidFailWithMessage:failMessage];
+}
+
+-(void)shareMessageManagerDidFinishSharing
+{
+    [self switchToListeningMode:nil];
 }
 
 #pragma mark - Alert View Delegate

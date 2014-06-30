@@ -14,12 +14,19 @@
 
 @property (strong, nonatomic) CBCentralManager      *centralManager;
 @property (strong, nonatomic) CBPeripheral          *discoveredPeripheral;
-@property (strong, nonatomic) NSMutableData         *data;
+//@property (strong, nonatomic) NSMutableData         *data;
+@property (nonatomic, retain) NSMutableDictionary          *peripheralDataDict;
+@property (nonatomic, retain) NSMutableArray        *allPeripherals;
+@property (nonatomic, retain) NSMutableArray        *peripheralIDs;
+
+-(void)addNewPeripheral:(CBPeripheral *)peripheral;
+- (void)cleanupPeripheral:(CBPeripheral *)peripheral;
+- (void)updateScan;
 
 @end
 
 @implementation SSFindMessageManager
-@synthesize delegate;
+@synthesize delegate, isAdvertising = _isAdvertising;
 
 - (id)init {
 	if ((self = [super init])) {
@@ -29,10 +36,15 @@
         _centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:centralQueue options:@{ CBCentralManagerOptionRestoreIdentifierKey: @"82ebf110-0072-11e4-9191-0800200c9a66" }];
         
         // And somewhere to store the incoming data
-        _data = [[NSMutableData alloc] init];
+        //_data = [[NSMutableData alloc] init];
+        
+        self.peripheralDataDict = [[NSMutableDictionary alloc] init];
         
         _foundOneMessage = NO;
         
+        self.allPeripherals = [[NSMutableArray alloc] init];
+        self.peripheralIDs = [[NSMutableArray alloc] init];
+
 	}
 	return self;
 }
@@ -41,9 +53,18 @@
 {
     // Don't keep it going while we're not showing.
     NSLog(@"Scanning stopped");
-    [self cleanup];
+#warning clean up connections here?
     [self.centralManager stopScan];
     
+}
+
+-(void)setIsAdvertising:(BOOL)newIsAdvertising
+{
+    if (_isAdvertising != newIsAdvertising) {
+        _isAdvertising = newIsAdvertising;
+        
+        [self updateScan];
+    }
 }
 
 #pragma mark - Central Background Restoration Delegate
@@ -57,10 +78,21 @@
     
     NSLog(@"peripherals: %@", peripherals);
     
-    if ([peripherals count] > 0) {
+    for (CBPeripheral *peripheral in peripherals) {
         
-        // connect to peripheral and get message
-        CBPeripheral *peripheral = [peripherals firstObject];
+        [self addNewPeripheral:peripheral];
+    }
+    
+}
+
+-(void)addNewPeripheral:(CBPeripheral *)peripheral
+{
+    if (![self.peripheralIDs containsObject:peripheral.identifier]) {
+        
+        // retain this peripheral
+        [self.allPeripherals addObject:peripheral];
+        
+        // redundant if we are retaining the peripheral in array allPeripherals?
         self.discoveredPeripheral = peripheral;
         
         // Stop scanning
@@ -69,11 +101,10 @@
         
         // And connect
         NSLog(@"Connecting to peripheral %@", peripheral);
-        [_foundPeripherals addObject:peripheral.identifier];
+        [self.peripheralIDs addObject:peripheral.identifier];
+        
         [self.centralManager connectPeripheral:peripheral options:nil];
-
     }
-    
 }
 
 #pragma mark - Central Methods
@@ -123,40 +154,38 @@
  */
 - (void)centralManagerDidUpdateState:(CBCentralManager *)central
 {
-    if ([self isLECapableHardware] != YES) {
-        NSLog(@"not capable");
-        return;
-    }
-    NSLog(@"capable");
-    
-    // The state must be CBCentralManagerStatePoweredOn...
-    
-    // ... so start scanning
-    
-    if (_foundPeripherals != nil) {
-        NSLog(@"foundPeripherals != nil");
-        if ([_foundPeripherals count] > 0) {
-            [_foundPeripherals removeAllObjects];
-        }
-        _foundPeripherals = nil;
-    }
-    
-    _foundPeripherals = [[NSMutableArray alloc] init];
-    
-    [self scan];
-    
+    [self updateScan];
 }
 
 
 /** Scan for peripherals - specifically for our service's 128bit CBUUID
  */
-- (void)scan
+- (void)updateScan
 {
-    [self.centralManager scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:[SimpleShare sharedInstance].simpleShareAppID]]
-                                                options:@{ CBCentralManagerScanOptionAllowDuplicatesKey : @YES }];
     
+    if ([self isLECapableHardware] != YES) {
+        NSLog(@"not capable");
+        return;
+    }
     
-    NSLog(@"Scanning started");
+    NSLog(@"capable");
+    
+    if (!_isAdvertising) {
+
+        [self.centralManager scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:[SimpleShare sharedInstance].simpleShareAppID]]
+                                                    options:@{ CBCentralManagerScanOptionAllowDuplicatesKey : @YES }];
+        
+        
+        NSLog(@"Scanning started");
+    } else {
+        [self.centralManager stopScan];
+        
+        // reset data to avoid half-sent messages
+        for (id key in self.peripheralDataDict) {
+            NSMutableData *data = [[NSMutableData alloc] init];
+            [self.peripheralDataDict setObject:data forKey:key];
+        }
+    }
 }
 
 
@@ -168,25 +197,7 @@
 {
     NSLog(@"Discovered %@ %@ at %@", peripheral.name, peripheral.identifier, RSSI);
         
-        if ([_foundPeripherals containsObject:peripheral.identifier] == NO) {
-            
-            NSLog(@"we haven't connected before");
-            
-            //NSLog(@"Discovered %@ %@ at %@", peripheral.name, peripheral.identifier, RSSI);
-            
-            // Save a local copy of the peripheral, so CoreBluetooth doesn't get rid of it
-            self.discoveredPeripheral = peripheral;
-            
-            // Stop scanning
-            [self.centralManager stopScan];
-            NSLog(@"Scanning stopped");
-
-            // And connect
-            NSLog(@"Connecting to peripheral %@", peripheral);
-            [_foundPeripherals addObject:peripheral.identifier];
-            [self.centralManager connectPeripheral:peripheral options:nil];
-
-        }
+    [self addNewPeripheral:peripheral];
     
 }
 
@@ -196,7 +207,10 @@
 - (void)centralManager:(CBCentralManager *)central didFailToConnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error
 {
     NSLog(@"Failed to connect to %@. (%@)", peripheral, [error localizedDescription]);
-    [self cleanup];
+    //[self cleanup];
+    [self.peripheralIDs removeObject:peripheral.identifier];
+    [self.allPeripherals removeObject:peripheral];
+    [self.peripheralDataDict removeObjectForKey:peripheral.identifier];
 }
 
 
@@ -207,7 +221,9 @@
     NSLog(@"Peripheral Connected");
     
     // Clear the data that we may already have
-    [self.data setLength:0];
+    NSMutableData *data = [[NSMutableData alloc] init];
+    
+    [self.peripheralDataDict setObject:data forKey:peripheral.identifier];
     
     // Make sure we get the discovery callbacks
     peripheral.delegate = self;
@@ -223,7 +239,7 @@
 {
     if (error) {
         NSLog(@"Error discovering services: %@", [error localizedDescription]);
-        [self cleanup];
+        [self cleanupPeripheral:peripheral];
         return;
     }
     
@@ -244,7 +260,7 @@
     // Deal with errors (if any)
     if (error) {
         NSLog(@"Error discovering characteristics: %@", [error localizedDescription]);
-        [self cleanup];
+        [self cleanupPeripheral:peripheral];
         return;
     }
     
@@ -268,37 +284,39 @@
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
 {
     if (error) {
-        NSLog(@"Error discovering characteristics: %@", [error localizedDescription]);
+        NSLog(@"Error updating characteristics: %@", [error localizedDescription]);
         return;
     }
     
-    NSString *stringFromData = [[NSString alloc] initWithData:characteristic.value encoding:NSUTF8StringEncoding];
-    
-    // Have we got everything we need?
-    if ([stringFromData isEqualToString:@"EOM"]) {
+    // handle only one message at a time
+    if (!_isAdvertising) {
+        NSString *stringFromData = [[NSString alloc] initWithData:characteristic.value encoding:NSUTF8StringEncoding];
         
-        // We have, so show the data,
-        NSLog(@"complete received message: %@", [[NSString alloc] initWithData:self.data encoding:NSUTF8StringEncoding]);
-        //[self.textview setText:[[NSString alloc] initWithData:self.data encoding:NSUTF8StringEncoding]];
-        
-        NSString *messageString = [[NSString alloc] initWithData:self.data encoding:NSUTF8StringEncoding];
-        
-        if ([messageString length] > 0) {
-            [self addMessage:messageString];
+        // Have we got everything we need?
+        if ([stringFromData isEqualToString:@"EOM"]) {
+            
+            // We have, so show the data,
+            NSLog(@"complete received message: %@", [[NSString alloc] initWithData:[self.peripheralDataDict objectForKey:peripheral.identifier] encoding:NSUTF8StringEncoding]);
+            //[self.textview setText:[[NSString alloc] initWithData:self.data encoding:NSUTF8StringEncoding]];
+            
+            NSString *messageString = [[NSString alloc] initWithData:[self.peripheralDataDict objectForKey:peripheral.identifier] encoding:NSUTF8StringEncoding];
+            
+            if ([messageString length] > 0) {
+                [self addMessage:messageString];
+            }
+            
+            // reset data but keep connected
+            NSMutableData *data = [[NSMutableData alloc] init];
+            [self.peripheralDataDict setObject:data forKey:peripheral.identifier];
         }
         
-        // Cancel our subscription to the characteristic
-        [peripheral setNotifyValue:NO forCharacteristic:characteristic];
+        // Otherwise, just add the data on to what we already have
+        [[self.peripheralDataDict objectForKey:peripheral.identifier] appendData:characteristic.value];
         
-        // and disconnect from the peripehral
-        [self.centralManager cancelPeripheralConnection:peripheral];
+        // Log it
+        NSLog(@"Received: %@", stringFromData);
     }
     
-    // Otherwise, just add the data on to what we already have
-    [self.data appendData:characteristic.value];
-    
-    // Log it
-    NSLog(@"Received: %@", stringFromData);
 }
 
 
@@ -336,8 +354,12 @@
     NSLog(@"Peripheral Disconnected");
     self.discoveredPeripheral = nil;
     
+    [self.peripheralIDs removeObject:peripheral.identifier];
+    
+    [self.peripheralDataDict removeObjectForKey:peripheral.identifier];
+    
     // We're disconnected, so start scanning again
-    //[self scan];
+    //[self updateScan];
 }
 
 
@@ -345,24 +367,23 @@
  *  This cancels any subscriptions if there are any, or straight disconnects if not.
  *  (didUpdateNotificationStateForCharacteristic will cancel the connection if a subscription is involved)
  */
-- (void)cleanup
+- (void)cleanupPeripheral:(CBPeripheral *)peripheral
 {
-    _foundPeripherals = nil;
     
     // Don't do anything if we're not connected
-    if (!self.discoveredPeripheral.isConnected) {
+    if (!peripheral.isConnected) {
         return;
     }
     
     // See if we are subscribed to a characteristic on the peripheral
-    if (self.discoveredPeripheral.services != nil) {
-        for (CBService *service in self.discoveredPeripheral.services) {
+    if (peripheral.services != nil) {
+        for (CBService *service in peripheral.services) {
             if (service.characteristics != nil) {
                 for (CBCharacteristic *characteristic in service.characteristics) {
                     if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:[SimpleShare sharedInstance].simpleShareAppID]]) {
                         if (characteristic.isNotifying) {
                             // It is notifying, so unsubscribe
-                            [self.discoveredPeripheral setNotifyValue:NO forCharacteristic:characteristic];
+                            [peripheral setNotifyValue:NO forCharacteristic:characteristic];
                             
                             // And we're done.
                             return;
@@ -374,7 +395,10 @@
     }
     
     // If we've got this far, we're connected, but we're not subscribed, so we just disconnect
-    [self.centralManager cancelPeripheralConnection:self.discoveredPeripheral];
+    [self.centralManager cancelPeripheralConnection:peripheral];
+    [self.peripheralIDs removeObject:peripheral.identifier];
+    [self.peripheralDataDict removeObjectForKey:peripheral.identifier];
+    [self.allPeripherals removeObject:peripheral];
 }
 
 #pragma mark - custom methods
@@ -399,10 +423,12 @@
 
 - (void)dealloc {
     [self.centralManager stopScan];
-    [self cleanup];
+    
+    for (CBPeripheral *peripheral in self.allPeripherals) {
+        [self cleanupPeripheral:peripheral];
+    }
     
     self.discoveredPeripheral = nil;
-    self.data = nil;
     
     self.centralManager.delegate = nil;
     self.centralManager = nil;

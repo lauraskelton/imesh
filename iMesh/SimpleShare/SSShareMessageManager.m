@@ -26,7 +26,7 @@
 
 @implementation SSShareMessageManager
 
-@synthesize isReadyToAdvertise, delegate, messageString;
+@synthesize isReadyToAdvertise, delegate, messageString = _messageString;
 
 - (id)init {
 	if ((self = [super init])) {
@@ -37,6 +37,25 @@
         NSLog(@"started sharing manager");
 	}
 	return self;
+}
+
+-(void)setMessageString:(NSString *)newMessageString
+{
+    if (_messageString != newMessageString) {
+        _messageString = newMessageString;
+        
+        if (_messageString != nil) {
+            // update subscribers
+            // Get the data
+            self.dataToSend = [_messageString dataUsingEncoding:NSUTF8StringEncoding];
+            
+            // Reset the index
+            self.sendDataIndex = 0;
+            
+            // Start sending
+            [self sendData];
+        }
+    }
 }
 
 #pragma mark - Peripheral Background Restoration Delegate
@@ -80,7 +99,7 @@
             
     }
     NSLog(@"Peripheral manager state: %@", state);
-    [self stopAdvertisingMessage:nil];
+    [self stopAdvertising:nil];
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [delegate shareMessageManagerDidFailWithMessage:state];
@@ -101,7 +120,7 @@
         } else {
             // should we stop sharing items now?
             NSLog(@"end advertise items");
-            [self stopAdvertisingMessage:nil];
+            [self stopAdvertising:nil];
         }
         return;
     }
@@ -129,8 +148,15 @@
     // And add it to the peripheral manager
     [self.peripheralManager addService:appService];
     
-    [self startAdvertisingMessage:nil];
+    //[self startAdvertising:nil];
     
+}
+
+-(void)shouldAdvertise:(id)sender
+{
+    if (self.isReadyToAdvertise == YES) {
+        [self startAdvertising:nil];
+    }
 }
 
 
@@ -144,6 +170,9 @@
         NSLog(@"Error: no message to share.");
     } else {
         
+#warning no need to start sending data here... just let the central connect. I don't think we need to retain the centrals here?
+        
+        /*
         // Get the data
         self.dataToSend = [self.messageString dataUsingEncoding:NSUTF8StringEncoding];
         
@@ -152,6 +181,7 @@
         
         // Start sending
         [self sendData];
+         */
     }
     
 }
@@ -377,7 +407,7 @@
 
 #pragma mark - Advertisements
 
-- (void)startAdvertisingMessage:(id)sender
+- (void)startAdvertising:(id)sender
 {
     
     NSArray *services = [NSArray arrayWithObject:[CBUUID UUIDWithString:[SimpleShare sharedInstance].simpleShareAppID]];
@@ -411,7 +441,7 @@
     return self.peripheralManager.isAdvertising;
 }
 
-- (void)stopAdvertisingMessage:(id)sender
+- (void)stopAdvertising:(id)sender
 {
     [self.peripheralManager stopAdvertising];
     NSLog(@"peripheral manager did stop advertising");

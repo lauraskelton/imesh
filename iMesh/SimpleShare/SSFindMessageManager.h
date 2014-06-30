@@ -18,11 +18,11 @@
 
 @interface SSFindMessageManager : NSObject
 {
-    NSMutableArray *_foundPeripherals;
     BOOL _foundOneMessage;
 }
 
 @property (nonatomic, assign) id <SSFindMessageManagerDelegate> delegate;
+@property (nonatomic, assign) BOOL isAdvertising;
 
 -(void)addMessage:(NSString *)messageToAdd;
 -(void)endFindMessage:(id)sender;
