@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		821473A01961E1B900E7FC13 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 8214739F1961E1B900E7FC13 /* README.md */; };
+		825EAB97195C9D76007AEB27 /* SimpleShare.m in Sources */ = {isa = PBXBuildFile; fileRef = 825EAB92195C9D76007AEB27 /* SimpleShare.m */; };
+		825EAB98195C9D76007AEB27 /* SSFindMessageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 825EAB94195C9D76007AEB27 /* SSFindMessageManager.m */; };
+		825EAB99195C9D76007AEB27 /* SSShareMessageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 825EAB96195C9D76007AEB27 /* SSShareMessageManager.m */; };
 		8269ED26195C9A720006FE2C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8269ED25195C9A720006FE2C /* Foundation.framework */; };
 		8269ED28195C9A720006FE2C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8269ED27195C9A720006FE2C /* CoreGraphics.framework */; };
 		8269ED2A195C9A720006FE2C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8269ED29195C9A720006FE2C /* UIKit.framework */; };
@@ -26,6 +30,7 @@
 		8269ED53195C9A720006FE2C /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8269ED2B195C9A720006FE2C /* CoreData.framework */; };
 		8269ED5B195C9A720006FE2C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8269ED59195C9A720006FE2C /* InfoPlist.strings */; };
 		8269ED5D195C9A720006FE2C /* iMeshTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8269ED5C195C9A720006FE2C /* iMeshTests.m */; };
+		82F45E30195E18E600C1A445 /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 82F45E2F195E18E600C1A445 /* Message.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,6 +44,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8214739F1961E1B900E7FC13 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		825EAB91195C9D76007AEB27 /* SimpleShare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleShare.h; sourceTree = "<group>"; };
+		825EAB92195C9D76007AEB27 /* SimpleShare.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleShare.m; sourceTree = "<group>"; };
+		825EAB93195C9D76007AEB27 /* SSFindMessageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSFindMessageManager.h; sourceTree = "<group>"; };
+		825EAB94195C9D76007AEB27 /* SSFindMessageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSFindMessageManager.m; sourceTree = "<group>"; };
+		825EAB95195C9D76007AEB27 /* SSShareMessageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSShareMessageManager.h; sourceTree = "<group>"; };
+		825EAB96195C9D76007AEB27 /* SSShareMessageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSShareMessageManager.m; sourceTree = "<group>"; };
 		8269ED22195C9A720006FE2C /* iMesh.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iMesh.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8269ED25195C9A720006FE2C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		8269ED27195C9A720006FE2C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -63,6 +75,8 @@
 		8269ED58195C9A720006FE2C /* iMeshTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "iMeshTests-Info.plist"; sourceTree = "<group>"; };
 		8269ED5A195C9A720006FE2C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8269ED5C195C9A720006FE2C /* iMeshTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iMeshTests.m; sourceTree = "<group>"; };
+		82F45E2E195E18E600C1A445 /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
+		82F45E2F195E18E600C1A445 /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +105,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		825EAB90195C9D76007AEB27 /* SimpleShare */ = {
+			isa = PBXGroup;
+			children = (
+				825EAB91195C9D76007AEB27 /* SimpleShare.h */,
+				825EAB92195C9D76007AEB27 /* SimpleShare.m */,
+				825EAB93195C9D76007AEB27 /* SSFindMessageManager.h */,
+				825EAB94195C9D76007AEB27 /* SSFindMessageManager.m */,
+				825EAB95195C9D76007AEB27 /* SSShareMessageManager.h */,
+				825EAB96195C9D76007AEB27 /* SSShareMessageManager.m */,
+			);
+			path = SimpleShare;
+			sourceTree = "<group>";
+		};
 		8269ED19195C9A720006FE2C = {
 			isa = PBXGroup;
 			children = (
@@ -125,16 +152,12 @@
 		8269ED2D195C9A720006FE2C /* iMesh */ = {
 			isa = PBXGroup;
 			children = (
-				8269ED36195C9A720006FE2C /* AppDelegate.h */,
-				8269ED37195C9A720006FE2C /* AppDelegate.m */,
-				8269ED39195C9A720006FE2C /* Main_iPhone.storyboard */,
-				8269ED3C195C9A720006FE2C /* Main_iPad.storyboard */,
-				8269ED42195C9A720006FE2C /* MasterViewController.h */,
-				8269ED43195C9A720006FE2C /* MasterViewController.m */,
-				8269ED45195C9A720006FE2C /* DetailViewController.h */,
-				8269ED46195C9A720006FE2C /* DetailViewController.m */,
-				8269ED48195C9A720006FE2C /* Images.xcassets */,
-				8269ED3F195C9A720006FE2C /* iMesh.xcdatamodeld */,
+				8214739F1961E1B900E7FC13 /* README.md */,
+				825EAB90195C9D76007AEB27 /* SimpleShare */,
+				8269ED67195C9A840006FE2C /* AppDelegate */,
+				8269ED68195C9A8A0006FE2C /* View Controllers */,
+				8269ED66195C9A7E0006FE2C /* Resources */,
+				8269ED69195C9A910006FE2C /* Data Model */,
 				8269ED2E195C9A720006FE2C /* Supporting Files */,
 			);
 			path = iMesh;
@@ -167,6 +190,46 @@
 				8269ED59195C9A720006FE2C /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8269ED66195C9A7E0006FE2C /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8269ED48195C9A720006FE2C /* Images.xcassets */,
+				8269ED39195C9A720006FE2C /* Main_iPhone.storyboard */,
+				8269ED3C195C9A720006FE2C /* Main_iPad.storyboard */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		8269ED67195C9A840006FE2C /* AppDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				8269ED36195C9A720006FE2C /* AppDelegate.h */,
+				8269ED37195C9A720006FE2C /* AppDelegate.m */,
+			);
+			name = AppDelegate;
+			sourceTree = "<group>";
+		};
+		8269ED68195C9A8A0006FE2C /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				8269ED42195C9A720006FE2C /* MasterViewController.h */,
+				8269ED43195C9A720006FE2C /* MasterViewController.m */,
+				8269ED45195C9A720006FE2C /* DetailViewController.h */,
+				8269ED46195C9A720006FE2C /* DetailViewController.m */,
+			);
+			name = "View Controllers";
+			sourceTree = "<group>";
+		};
+		8269ED69195C9A910006FE2C /* Data Model */ = {
+			isa = PBXGroup;
+			children = (
+				8269ED3F195C9A720006FE2C /* iMesh.xcdatamodeld */,
+				82F45E2E195E18E600C1A445 /* Message.h */,
+				82F45E2F195E18E600C1A445 /* Message.m */,
+			);
+			name = "Data Model";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -216,6 +279,13 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Laura Skelton";
 				TargetAttributes = {
+					8269ED21195C9A720006FE2C = {
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
+					};
 					8269ED4D195C9A720006FE2C = {
 						TestTargetID = 8269ED21195C9A720006FE2C;
 					};
@@ -267,11 +337,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				825EAB98195C9D76007AEB27 /* SSFindMessageManager.m in Sources */,
 				8269ED47195C9A720006FE2C /* DetailViewController.m in Sources */,
+				821473A01961E1B900E7FC13 /* README.md in Sources */,
+				825EAB99195C9D76007AEB27 /* SSShareMessageManager.m in Sources */,
 				8269ED44195C9A720006FE2C /* MasterViewController.m in Sources */,
 				8269ED38195C9A720006FE2C /* AppDelegate.m in Sources */,
 				8269ED41195C9A720006FE2C /* iMesh.xcdatamodeld in Sources */,
 				8269ED34195C9A720006FE2C /* main.m in Sources */,
+				82F45E30195E18E600C1A445 /* Message.m in Sources */,
+				825EAB97195C9D76007AEB27 /* SimpleShare.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -486,6 +561,7 @@
 				8269ED62195C9A720006FE2C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8269ED63195C9A720006FE2C /* Build configuration list for PBXNativeTarget "iMeshTests" */ = {
 			isa = XCConfigurationList;
@@ -494,6 +570,7 @@
 				8269ED65195C9A720006FE2C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

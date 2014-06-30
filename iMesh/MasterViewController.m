@@ -8,20 +8,24 @@
 
 #import "MasterViewController.h"
 
-#import "DetailViewController.h"
+#import "SimpleShare.h"
 
-@interface MasterViewController ()
+#import "DetailViewController.h"
+#import "Message.h"
+#import "AppDelegate.h"
+
+@interface MasterViewController () <SimpleShareDelegate, UITextFieldDelegate>
+
+@property (nonatomic, retain) AppDelegate *appDelegate;
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
+-(NSString *)formatDate:(NSDate *)date;
+-(void)shareMessage:(NSString *)messageToShare;
 @end
 
 @implementation MasterViewController
 
 - (void)awakeFromNib
 {
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        self.clearsSelectionOnViewWillAppear = NO;
-        self.preferredContentSize = CGSizeMake(320.0, 600.0);
-    }
     [super awakeFromNib];
 }
 
@@ -29,11 +33,10 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-    self.navigationItem.leftBarButtonItem = self.editButtonItem;
-
-    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
-    self.navigationItem.rightBarButtonItem = addButton;
-    self.detailViewController = (DetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
+    
+    [SimpleShare sharedInstance].delegate = self;
+    self.appDelegate = [UIApplication sharedApplication].delegate;
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -42,88 +45,133 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)insertNewObject:(id)sender
+#pragma mark - Simple Share Delegate
+
+- (void)simpleShareFoundMessage:(NSDictionary *)messageDictionary
 {
-    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-    NSEntityDescription *entity = [[self.fetchedResultsController fetchRequest] entity];
-    NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:[entity name] inManagedObjectContext:context];
+    NSLog(@"message found: %@", messageDictionary);
     
-    // If appropriate, configure the new managed object.
-    // Normally you should use accessor methods, but using KVC here avoids the need to add a custom class to the template.
-    [newManagedObject setValue:[NSDate date] forKey:@"timeStamp"];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Message" message:[messageDictionary objectForKey:@"messageString"] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    [alert show];
     
-    // Save the context.
-    NSError *error = nil;
-    if (![context save:&error]) {
-         // Replace this implementation with code to handle the error appropriately.
-         // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
-    }
+    Message *thisMessage = [Message insertMessageFromDictionary:messageDictionary inManagedObjectContext:self.managedObjectContext];
+    [self.appDelegate saveContext];
+    thisMessage = nil;
+}
+
+- (void)simpleShareDidFailWithMessage:(NSString *)failMessage
+{
+    NSLog(@"simple share failed with error: %@", failMessage);
 }
 
 #pragma mark - Table View
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [[self.fetchedResultsController sections] count];
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
+    if (section == 0) {
+        return 2;
+    }
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
     return [sectionInfo numberOfObjects];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+    UITableViewCell *cell;
+    if (indexPath.section == 0) {
+        switch (indexPath.row) {
+            case 0:
+                 cell = [tableView dequeueReusableCellWithIdentifier:@"UserIDCell" forIndexPath:indexPath];
+                break;
+            case 1:
+                cell = [tableView dequeueReusableCellWithIdentifier:@"TextEntryCell" forIndexPath:indexPath];
+                break;
+            default:
+                return nil;
+                break;
+        }
+    } else {
+        cell = [tableView dequeueReusableCellWithIdentifier:@"MessageCell" forIndexPath:indexPath];
+    }
     [self configureCell:cell atIndexPath:indexPath];
     return cell;
 }
 
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-        [context deleteObject:[self.fetchedResultsController objectAtIndexPath:indexPath]];
-        
-        NSError *error = nil;
-        if (![context save:&error]) {
-             // Replace this implementation with code to handle the error appropriately.
-             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
+    if (indexPath.section == 0) {
+        UITextField *textField;
+        switch (indexPath.row) {
+            case 0:
+                textField = (UITextField *)[cell.contentView viewWithTag:3];
+                textField.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"iMeshUserIDKey"];
+                break;
+            case 1:
+                textField = (UITextField *)[cell.contentView viewWithTag:2];
+                break;
+            default:
+                break;
         }
-    }   
-}
-
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // The table view should not be re-orderable.
-    return NO;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-        self.detailViewController.detailItem = object;
+        textField.delegate = self;
+    } else {
+        Message *aMessage = [self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
+        cell.textLabel.text = aMessage.messageString;
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"from: %@     hops: %@     at %@", aMessage.fromUser, aMessage.hops, [self formatDate:aMessage.timestamp]];
     }
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+-(NSString *)formatDate:(NSDate *)date
 {
-    if ([[segue identifier] isEqualToString:@"showDetail"]) {
-        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-        [[segue destinationViewController] setDetailItem:object];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    NSLocale *locale = [NSLocale currentLocale];
+    [formatter setLocale:locale];
+    [formatter setDateFormat:@"h:mm a"];
+    NSString *dateString = [formatter stringFromDate:date];
+    formatter = nil;
+    return dateString;
+}
+
+-(void)shareMessage:(NSString *)messageToShare
+{
+    NSDictionary *messageDictionary = [Message dictionaryForNewMessage:messageToShare];
+    
+    [[SimpleShare sharedInstance] shareMessage:messageDictionary];
+}
+
+#pragma mark - UITextField Delegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if (textField.tag == 2) {
+        // message send textfield
+        if ([textField.text length] > 0) {
+            [self shareMessage:textField.text];
+            
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Sharing Message" message:textField.text delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            [alert show];
+            
+            textField.text = @"";
+        } else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Blank Message" message:@"Please enter a message to share." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            [alert show];
+        }
+        
+    }
+    
+    [textField resignFirstResponder];
+    return YES;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    if (textField.tag == 3) {
+        [[NSUserDefaults standardUserDefaults] setObject:textField.text forKey:@"iMeshUserIDKey"];
+        [textField resignFirstResponder];
     }
 }
 
@@ -137,14 +185,14 @@
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     // Edit the entity name as appropriate.
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Event" inManagedObjectContext:self.managedObjectContext];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Message" inManagedObjectContext:self.managedObjectContext];
     [fetchRequest setEntity:entity];
     
     // Set the batch size to a suitable number.
     [fetchRequest setFetchBatchSize:20];
     
     // Edit the sort key as appropriate.
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timeStamp" ascending:NO];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timestamp" ascending:NO];
     NSArray *sortDescriptors = @[sortDescriptor];
     
     [fetchRequest setSortDescriptors:sortDescriptors];
@@ -155,81 +203,89 @@
     aFetchedResultsController.delegate = self;
     self.fetchedResultsController = aFetchedResultsController;
     
-	NSError *error = nil;
-	if (![self.fetchedResultsController performFetch:&error]) {
-	     // Replace this implementation with code to handle the error appropriately.
-	     // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
-	    NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-	    abort();
-	}
+    NSError *error = nil;
+    if (![self.fetchedResultsController performFetch:&error]) {
+        // Replace this implementation with code to handle the error appropriately.
+        // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
     
     return _fetchedResultsController;
-}    
-
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
-{
-    [self.tableView beginUpdates];
-}
-
-- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
-           atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
-{
-    switch(type) {
-        case NSFetchedResultsChangeInsert:
-            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-            
-        case NSFetchedResultsChangeDelete:
-            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-    }
-}
-
-- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject
-       atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type
-      newIndexPath:(NSIndexPath *)newIndexPath
-{
-    UITableView *tableView = self.tableView;
-    
-    switch(type) {
-        case NSFetchedResultsChangeInsert:
-            [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-            
-        case NSFetchedResultsChangeDelete:
-            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-            
-        case NSFetchedResultsChangeUpdate:
-            [self configureCell:[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
-            break;
-            
-        case NSFetchedResultsChangeMove:
-            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-    }
-}
-
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
-{
-    [self.tableView endUpdates];
 }
 
 /*
-// Implementing the above methods to update the table view in response to individual changes may have performance implications if a large number of changes are made simultaneously. If this proves to be an issue, you can instead just implement controllerDidChangeContent: which notifies the delegate that all section and object changes have been processed. 
+ 
+ - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
+ {
+ [self.tableView beginUpdates];
+ }
+ 
+ - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
+ atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
+ {
+ switch(type) {
+ case NSFetchedResultsChangeInsert:
+ [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+ break;
+ 
+ case NSFetchedResultsChangeDelete:
+ [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+ break;
+ }
+ }
+ 
+ - (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject
+ atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type
+ newIndexPath:(NSIndexPath *)newIndexPath
+ {
+ UITableView *tableView = self.tableView;
+ 
+ switch(type) {
+ case NSFetchedResultsChangeInsert:
+ [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+ break;
+ 
+ case NSFetchedResultsChangeDelete:
+ [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+ break;
+ 
+ case NSFetchedResultsChangeUpdate:
+ [self configureCell:[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+ break;
+ 
+ case NSFetchedResultsChangeMove:
+ [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+ [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+ break;
+ }
+ }
  
  - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+ {
+ [self.tableView endUpdates];
+ }
+ */
+
+// Implementing the above methods to update the table view in response to individual changes may have performance implications if a large number of changes are made simultaneously. If this proves to be an issue, you can instead just implement controllerDidChangeContent: which notifies the delegate that all section and object changes have been processed.
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
     // In the simplest, most efficient, case, reload the table view.
     [self.tableView reloadData];
 }
- */
-
-- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
-{
-    NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    cell.textLabel.text = [[object valueForKey:@"timeStamp"] description];
-}
 
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
