@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		821473A01961E1B900E7FC13 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 8214739F1961E1B900E7FC13 /* README.md */; };
+		821B0AC219630A6A00532F31 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 821B0AC119630A6A00532F31 /* README.md */; };
 		825EAB97195C9D76007AEB27 /* SimpleShare.m in Sources */ = {isa = PBXBuildFile; fileRef = 825EAB92195C9D76007AEB27 /* SimpleShare.m */; };
 		825EAB98195C9D76007AEB27 /* SSFindMessageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 825EAB94195C9D76007AEB27 /* SSFindMessageManager.m */; };
 		825EAB99195C9D76007AEB27 /* SSShareMessageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 825EAB96195C9D76007AEB27 /* SSShareMessageManager.m */; };
@@ -44,7 +44,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		8214739F1961E1B900E7FC13 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		821B0AC119630A6A00532F31 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		825EAB91195C9D76007AEB27 /* SimpleShare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleShare.h; sourceTree = "<group>"; };
 		825EAB92195C9D76007AEB27 /* SimpleShare.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleShare.m; sourceTree = "<group>"; };
 		825EAB93195C9D76007AEB27 /* SSFindMessageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSFindMessageManager.h; sourceTree = "<group>"; };
@@ -121,6 +121,7 @@
 		8269ED19195C9A720006FE2C = {
 			isa = PBXGroup;
 			children = (
+				821B0AC119630A6A00532F31 /* README.md */,
 				8269ED2D195C9A720006FE2C /* iMesh */,
 				8269ED56195C9A720006FE2C /* iMeshTests */,
 				8269ED24195C9A720006FE2C /* Frameworks */,
@@ -152,7 +153,6 @@
 		8269ED2D195C9A720006FE2C /* iMesh */ = {
 			isa = PBXGroup;
 			children = (
-				8214739F1961E1B900E7FC13 /* README.md */,
 				825EAB90195C9D76007AEB27 /* SimpleShare */,
 				8269ED67195C9A840006FE2C /* AppDelegate */,
 				8269ED68195C9A8A0006FE2C /* View Controllers */,
@@ -339,7 +339,7 @@
 			files = (
 				825EAB98195C9D76007AEB27 /* SSFindMessageManager.m in Sources */,
 				8269ED47195C9A720006FE2C /* DetailViewController.m in Sources */,
-				821473A01961E1B900E7FC13 /* README.md in Sources */,
+				821B0AC219630A6A00532F31 /* README.md in Sources */,
 				825EAB99195C9D76007AEB27 /* SSShareMessageManager.m in Sources */,
 				8269ED44195C9A720006FE2C /* MasterViewController.m in Sources */,
 				8269ED38195C9A720006FE2C /* AppDelegate.m in Sources */,
