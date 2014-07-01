@@ -1,7 +1,7 @@
 Description
 ===========
-Bluetooth LE-based Mobile Ad-Hoc Messaging Network for iOS in Objective-C
+iMesh is a Bluetooth LE-based Mobile Ad Hoc Messaging Network
 
 Credits
 ===========
-iMesh was created by Laura Skelton.
+Created by Laura Skelton.

@@ -16,6 +16,7 @@
 @protocol SSShareMessageManagerDelegate <NSObject>
 - (void)shareMessageManagerDidFailWithMessage:(NSString *)failMessage;
 -(void)shareMessageManagerDidFinishSharing;
+-(void)shareMessageManagerNotReady;
 @end
 
 @interface SSShareMessageManager : NSObject <CBPeripheralManagerDelegate>

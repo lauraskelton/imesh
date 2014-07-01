@@ -82,10 +82,11 @@
     // start listening for messages
     [self startFindingNearbyMessages:nil];
     
-    NSTimeInterval randomAdvertisingInterval = arc4random_uniform(540); // should advertise about once every 5 minutes (?)
+    _shareManager = [[SSShareMessageManager alloc] init];
+    _shareManager.delegate = self;
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self performSelector:@selector(advertisingTimerCallback:) withObject:nil afterDelay:randomAdvertisingInterval];
+        [self performSelector:@selector(advertisingTimerCallback:) withObject:nil afterDelay:30.0];
     });
     
     return self;
@@ -119,7 +120,7 @@
         _findManager.isAdvertising = NO;
     }
     
-    NSTimeInterval randomAdvertisingInterval = arc4random_uniform(540); // should advertise about once every 5 minutes (?)
+    NSTimeInterval randomAdvertisingInterval = arc4random_uniform(240); // should advertise about once every 5 minutes (?)
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self performSelector:@selector(advertisingTimerCallback:) withObject:nil afterDelay:randomAdvertisingInterval];
@@ -201,8 +202,11 @@
         _shareManager = [[SSShareMessageManager alloc] init];
         _shareManager.delegate = self;
     }
-    NSError *error;
-    _shareManager.messageString = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:self.messageDictionary options:NSJSONWritingPrettyPrinted error:&error] encoding:NSUTF8StringEncoding];
+    
+    if ([NSJSONSerialization isValidJSONObject:self.messageDictionary]) {
+        NSError *error;
+        _shareManager.messageString = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:self.messageDictionary options:NSJSONWritingPrettyPrinted error:&error] encoding:NSUTF8StringEncoding];
+    }
 }
 
 -(void)stopSharingMessage:(id)sender
@@ -255,7 +259,7 @@
     
     NSLog(@"message: %@", messageDictionary);
     
-    if (![[messageDictionary objectForKey:@"messageID"] integerValue] == [[self.messageDictionary objectForKey:@"messageID"] integerValue]) {
+    if (!([[messageDictionary objectForKey:@"messageID"] integerValue] == [[self.messageDictionary objectForKey:@"messageID"] integerValue])) {
         // tell the delegate to update the user interface with the found message
         [delegate simpleShareFoundMessage:messageDictionary];
         
@@ -299,7 +303,16 @@
 
 -(void)shareMessageManagerDidFinishSharing
 {
+    NSLog(@"share manager did finish sharing");
     [self switchToListeningMode:nil];
+}
+
+-(void)shareMessageManagerNotReady
+{
+    [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Not Ready", nil) message:@"Not quite ready to send messages." delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"OK", nil), nil] show];
+    
+    NSLog(@"NO CONNECTED CENTRALS");
+    NSLog(@"Cannot share message.");
 }
 
 #pragma mark - Alert View Delegate

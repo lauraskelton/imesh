@@ -173,18 +173,21 @@
     if (!_isAdvertising) {
 
         [self.centralManager scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:[SimpleShare sharedInstance].simpleShareAppID]]
-                                                    options:@{ CBCentralManagerScanOptionAllowDuplicatesKey : @YES }];
+                                                    options:@{ CBCentralManagerScanOptionAllowDuplicatesKey : @NO }];
         
         
         NSLog(@"Scanning started");
     } else {
         [self.centralManager stopScan];
         
+        NSMutableDictionary *tmpDataDict = [[NSMutableDictionary alloc] init];
         // reset data to avoid half-sent messages
         for (id key in self.peripheralDataDict) {
             NSMutableData *data = [[NSMutableData alloc] init];
-            [self.peripheralDataDict setObject:data forKey:key];
+            [tmpDataDict setObject:data forKey:key];
         }
+        self.peripheralDataDict = tmpDataDict;
+        tmpDataDict = nil;
     }
 }
 
@@ -344,6 +347,11 @@
         NSLog(@"Notification stopped on %@.  Disconnecting", characteristic);
         [self.centralManager cancelPeripheralConnection:peripheral];
     }
+}
+
+- (void)peripheral:(CBPeripheral *)peripheral didModifyServices:(NSArray *)invalidatedServices
+{
+    NSLog(@"peripheral %@ did modify services: %@", peripheral, invalidatedServices);
 }
 
 
